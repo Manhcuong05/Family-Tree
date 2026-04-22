@@ -16,36 +16,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Trần Khắc A</td>
-          <td>1</td>
-          <td>Nam</td>
-          <td>1890</td>
-          <td>
-            <button class="btn btn-secondary btn-sm">Sửa</button>
-            <button class="btn btn-secondary btn-sm">Thêm Con</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Trần Thị B</td>
-          <td>2</td>
-          <td>Nữ</td>
-          <td>1920</td>
-          <td>
-            <button class="btn btn-secondary btn-sm">Sửa</button>
-            <button class="btn btn-secondary btn-sm">Thêm Con</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Trần Văn C</td>
-          <td>2</td>
-          <td>Nam</td>
-          <td>1925</td>
-          <td>
-            <button class="btn btn-secondary btn-sm">Sửa</button>
-            <button class="btn btn-secondary btn-sm">Thêm Con</button>
-          </td>
-        </tr>
+        @for (member of members; track member.id) {
+          <tr>
+            <td>{{ member.fullName }}</td>
+            <td>{{ member.generation }}</td>
+            <td>{{ member.gender === 'MALE' ? 'Nam' : (member.gender === 'FEMALE' ? 'Nữ' : 'Khác') }}</td>
+            <td>{{ member.birthYear || 'Chưa rõ' }}</td>
+            <td>
+              <button class="btn btn-secondary btn-sm">Sửa</button>
+              <button class="btn btn-secondary btn-sm">Thêm Con</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="text-center">Chưa có dữ liệu thành viên.</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

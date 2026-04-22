@@ -3,18 +3,21 @@
     <h2 class="text-center">Đăng Nhập</h2>
     <p class="text-center mb-4">Gia Phả Dòng Họ Trần Hải Phúc</p>
     
-    <form>
+    <form (ngSubmit)="onSubmit()">
+      @if (error) {
+        <div class="error-msg">{{ error }}</div>
+      }
       <div class="form-group">
-        <label for="email">Tài khoản (Email/SĐT)</label>
-        <input type="email" id="email" class="form-control" placeholder="Nhập tài khoản">
+        <label for="username">Tài khoản (Email/SĐT)</label>
+        <input type="text" id="username" name="username" [(ngModel)]="credentials.username" class="form-control" placeholder="Nhập tài khoản" required>
       </div>
       
       <div class="form-group">
         <label for="password">Mật khẩu</label>
-        <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu">
+        <input type="password" id="password" name="password" [(ngModel)]="credentials.password" class="form-control" placeholder="Nhập mật khẩu" required>
       </div>
       
-      <button type="button" class="btn btn-primary full-width mt-4" routerLink="/dashboard">Đăng Nhập Cội Nguồn</button>
+      <button type="submit" class="btn btn-primary full-width mt-4">Đăng Nhập Cội Nguồn</button>
     </form>
   </div>
 </div>

@@ -20,3 +20,12 @@ label {
 .full-width {
   width: 100%;
 }
+
+.error-msg {
+  color: #D32F2F;
+  background-color: #FFEBEE;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
