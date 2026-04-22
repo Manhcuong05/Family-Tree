@@ -14,7 +14,7 @@ export class MemberService {
     return this.http.get(`${this.apiUrl}`);
   }
 
-  getTree(rootId: number): Observable<any> {
+  getTree(rootId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/tree/${rootId}`);
   }
 
@@ -24,5 +24,9 @@ export class MemberService {
 
   addRelationship(relationshipData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/relationship`, relationshipData);
+  }
+
+  deleteMember(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

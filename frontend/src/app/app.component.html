@@ -9,7 +9,10 @@
   </div>
   <div class="nav-auth">
     @if (authService.isLoggedIn()) {
-      <button class="btn btn-secondary" (click)="logout()">Đăng Xuất</button>
+      <div class="user-info" style="display: flex; align-items: center; gap: 1rem;">
+        <span style="color: var(--color-text-muted); font-weight: 500;">Xin chào, {{ authService.getUsername() }}</span>
+        <button class="btn btn-secondary" (click)="logout()">Đăng Xuất</button>
+      </div>
     } @else {
       <button class="btn btn-primary" routerLink="/auth">Đăng Nhập</button>
     }

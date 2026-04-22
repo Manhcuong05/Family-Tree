@@ -25,7 +25,25 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
+  createManagedUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/create-user`, userData);
+  }
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
+  }
+
+  getUsername(): string {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = token.split('.')[1];
+        const decoded = JSON.parse(atob(payload));
+        return decoded.sub || 'Người Dùng';
+      } catch (e) {
+        return 'Người Dùng';
+      }
+    }
+    return '';
   }
 }

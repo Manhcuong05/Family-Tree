@@ -32,7 +32,7 @@ public class SecurityConfig {
             .cors(org.springframework.security.config.Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register").permitAll()
+                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register", "/error").permitAll()
                 .requestMatchers("/api/v1/auth/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/v1/members/tree/**").permitAll()
                 .anyRequest().authenticated()

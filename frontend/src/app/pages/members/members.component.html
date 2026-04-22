@@ -1,7 +1,54 @@
 <div class="header-actions">
   <h2>Danh Sách Thành Viên</h2>
-  <button class="btn btn-primary">Thêm Thành Viên Mới</button>
+  <button class="btn btn-primary" (click)="toggleAddForm()">
+    {{ isAdding ? 'Hủy' : '+ Thêm Thành Viên' }}
+  </button>
 </div>
+
+@if (isAdding) {
+  <div class="glass-card mt-4 p-4">
+    <h3 class="mb-4">Thêm Thành Viên Mới</h3>
+    <form (ngSubmit)="onSubmit()" #memberForm="ngForm">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Họ và Tên</label>
+          <input type="text" name="hoTen" class="form-input" [(ngModel)]="newMember.hoTen" required placeholder="Nhập họ tên...">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Giới Tính</label>
+          <select name="gioiTinh" class="form-select" [(ngModel)]="newMember.gioiTinh">
+            <option value="NAM">Nam</option>
+            <option value="NU">Nữ</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Đời Thứ</label>
+          <input type="number" name="soDoi" class="form-input" [(ngModel)]="newMember.soDoi" min="1">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Cha/Mẹ (nếu có)</label>
+          <select name="parentId" class="form-select" [(ngModel)]="parentId">
+            <option value="">-- Chọn Cha/Mẹ --</option>
+            @for (m of members; track m.id) {
+              <option [value]="m.id">{{ m.hoTen }} (Đời {{ m.soDoi }})</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Loại Quan Hệ</label>
+          <select name="relationshipType" class="form-select" [(ngModel)]="relationshipType">
+            <option value="RUOT">Ruột</option>
+            <option value="NUOI">Nuôi</option>
+            <option value="DAU_RE">Dâu/Rể</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!memberForm.valid">Lưu Thành Viên</button>
+    </form>
+  </div>
+}
 
 <div class="glass-card mt-4">
   <div class="table-responsive">
@@ -18,13 +65,12 @@
       <tbody>
         @for (member of members; track member.id) {
           <tr>
-            <td>{{ member.fullName }}</td>
-            <td>{{ member.generation }}</td>
-            <td>{{ member.gender === 'MALE' ? 'Nam' : (member.gender === 'FEMALE' ? 'Nữ' : 'Khác') }}</td>
-            <td>{{ member.birthYear || 'Chưa rõ' }}</td>
+            <td>{{ member.hoTen }}</td>
+            <td>{{ member.soDoi }}</td>
+            <td>{{ member.gioiTinh === 'NAM' ? 'Nam' : 'Nữ' }}</td>
+            <td>{{ member.namSinhDuDoan || 'Chưa rõ' }}</td>
             <td>
-              <button class="btn btn-secondary btn-sm">Sửa</button>
-              <button class="btn btn-secondary btn-sm">Thêm Con</button>
+              <button class="btn btn-secondary btn-sm" (click)="deleteMember(member.id)">Xoá</button>
             </td>
           </tr>
         } @empty {
@@ -36,3 +82,4 @@
     </table>
   </div>
 </div>
+

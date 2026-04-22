@@ -7,22 +7,16 @@
     </div>
     
     <!-- Placeholder for OrgChart / Canvas -->
-    <div class="tree-placeholder">
-      <div class="node node-root" (click)="selectNode({fullName: 'Cụ Tổ: Trần ABC', generation: 1, birthYear: 1850, gender: 'MALE'})">
-        <div class="node-name">Cụ Tổ: Trần ABC</div>
-        <div class="node-gen">Đời 1</div>
-      </div>
-      <div class="node-connector"></div>
-      <div class="node-children">
-        <div class="node" (click)="selectNode({fullName: 'Trần Khắc A', generation: 2, birthYear: 1890, gender: 'MALE'})">
-          <div class="node-name">Trần Khắc A</div>
-          <div class="node-gen">Đời 2</div>
-        </div>
-        <div class="node" (click)="selectNode({fullName: 'Trần Văn C', generation: 2, birthYear: 1925, gender: 'MALE'})">
-          <div class="node-name">Trần Văn C</div>
-          <div class="node-gen">Đời 2</div>
-        </div>
-      </div>
+    <div class="tree-viewport">
+      @if (treeData) {
+        <app-tree-node 
+          [node]="treeData" 
+          [selectedNodeId]="selectedMember?.id"
+          (select)="selectNode($event)">
+        </app-tree-node>
+      } @else {
+        <div class="empty-tree">Đang tải dữ liệu phả đồ...</div>
+      }
     </div>
   </div>
 
@@ -34,14 +28,14 @@
       </div>
       
       <div class="member-detail">
-        <h4>{{ selectedMember.fullName || 'Tên thành viên' }}</h4>
-        <p><strong>Đời thứ:</strong> {{ selectedMember.generation || '?' }}</p>
-        <p><strong>Năm sinh:</strong> {{ selectedMember.birthYear || '?' }}</p>
-        <p><strong>Giới tính:</strong> {{ selectedMember.gender === 'MALE' ? 'Nam' : 'Nữ' }}</p>
-        <p><strong>Tiểu sử:</strong><br>
-        Dữ liệu phả ký chi tiết từ Backend...</p>
+        <h4>{{ selectedMember.name }}</h4>
+        <p><strong>Đời thứ:</strong> {{ selectedMember.soDoi }}</p>
+        <p><strong>ID:</strong> <small>{{ selectedMember.id }}</small></p>
         
-        <button class="btn btn-primary full-width mt-4">Sửa thông tin</button>
+        <div class="mt-4">
+          <button class="btn btn-primary full-width mb-2">Xem chi tiết</button>
+          <button class="btn btn-secondary full-width">Chỉnh sửa</button>
+        </div>
       </div>
     </div>
   }

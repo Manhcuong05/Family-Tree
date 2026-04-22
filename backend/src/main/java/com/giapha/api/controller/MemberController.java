@@ -20,6 +20,7 @@ import java.util.UUID;
 public class MemberController {
 
     private final MemberService memberService;
+    private final com.giapha.api.repository.MemberRepository memberRepository;
 
     @PostMapping
     public ResponseEntity<Member> createMember(@RequestBody CreateMemberRequest request) {
@@ -31,6 +32,17 @@ public class MemberController {
     public ResponseEntity<Relationship> addRelationship(@RequestBody AddRelationshipRequest request) {
         Relationship relationship = memberService.addRelationship(request.getParentId(), request.getChildId(), request.getType());
         return ResponseEntity.ok(relationship);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Member>> getAllMembers() {
+        return ResponseEntity.ok(memberRepository.findAll());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMember(@PathVariable UUID id) {
+        memberRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/tree/{rootId}")
