@@ -12,10 +12,12 @@ import { FormsModule } from '@angular/forms';
 })
 export class MembersComponent implements OnInit {
   members: any[] = [];
+  searchTerm: string = '';
   newMember: any = {
     hoTen: '',
     gioiTinh: 'NAM',
-    soDoi: 1
+    soDoi: 1,
+    namSinhDuDoan: null
   };
   parentId: string = '';
   relationshipType: string = 'RUOT';
@@ -27,10 +29,19 @@ export class MembersComponent implements OnInit {
     this.loadMembers();
   }
 
+  get filteredMembers() {
+    if (!this.searchTerm) return this.members;
+    const term = this.searchTerm.toLowerCase();
+    return this.members.filter(m => 
+      m.hoTen.toLowerCase().includes(term) || 
+      (m.tieuSu && m.tieuSu.toLowerCase().includes(term))
+    );
+  }
+
   loadMembers() {
     this.memberService.getAllMembers().subscribe({
       next: (data) => {
-        this.members = Array.isArray(data) ? data : data.content || [];
+        this.members = Array.isArray(data) ? data : (data.content || []);
       },
       error: (err) => console.error('Error fetching members:', err)
     });

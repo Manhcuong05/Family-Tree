@@ -16,7 +16,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // For development
 public class MemberController {
 
     private final MemberService memberService;

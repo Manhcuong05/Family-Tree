@@ -51,14 +51,14 @@ class MemberServiceTest {
                 .id(parentId)
                 .hoTen("Parent")
                 .soDoi(1)
-                .gioiTinh(Gender.MALE)
+                .gioiTinh(Gender.NAM)
                 .build();
 
         child = Member.builder()
                 .id(childId)
                 .hoTen("Child")
                 .soDoi(2)
-                .gioiTinh(Gender.MALE)
+                .gioiTinh(Gender.NAM)
                 .build();
     }
 

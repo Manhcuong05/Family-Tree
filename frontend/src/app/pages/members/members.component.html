@@ -1,8 +1,16 @@
 <div class="header-actions">
-  <h2>Danh Sách Thành Viên</h2>
-  <button class="btn btn-primary" (click)="toggleAddForm()">
-    {{ isAdding ? 'Hủy' : '+ Thêm Thành Viên' }}
-  </button>
+  <div class="title-group">
+    <h2>Danh Sách Thành Viên</h2>
+    <span class="badge">{{ members.length }} thành viên</span>
+  </div>
+  <div class="actions-group">
+    <div class="search-box">
+      <input type="text" class="form-input" placeholder="Tìm kiếm thành viên..." [(ngModel)]="searchTerm">
+    </div>
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      {{ isAdding ? 'Hủy' : '+ Thêm Thành Viên' }}
+    </button>
+  </div>
 </div>
 
 @if (isAdding) {
@@ -63,7 +71,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (member of members; track member.id) {
+        @for (member of filteredMembers; track member.id) {
           <tr>
             <td>{{ member.hoTen }}</td>
             <td>{{ member.soDoi }}</td>
