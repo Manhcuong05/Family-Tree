@@ -1,0 +1,84 @@
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  p {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.anniversary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px dashed #E0C0B2;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .date {
+    font-weight: bold;
+    color: var(--color-primary);
+    width: 120px;
+  }
+
+  .info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    strong {
+      font-size: 1.1rem;
+    }
+
+    span {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.btn-sm {
+  min-height: 36px;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+}
+
+.news-item {
+  h4 {
+    margin-bottom: 0.25rem;
+  }
+  
+  p {
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

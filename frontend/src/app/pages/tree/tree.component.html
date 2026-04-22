@@ -1,1 +1,48 @@
-<p>tree works!</p>
+<div class="tree-layout">
+  <div class="tree-canvas glass-card">
+    <div class="tree-controls">
+      <button class="btn btn-secondary btn-sm">+</button>
+      <button class="btn btn-secondary btn-sm">-</button>
+      <button class="btn btn-secondary btn-sm">Mặc định</button>
+    </div>
+    
+    <!-- Placeholder for OrgChart / Canvas -->
+    <div class="tree-placeholder">
+      <div class="node node-root" (click)="selectedMember = true">
+        <div class="node-name">Cụ Tổ: Trần ABC</div>
+        <div class="node-gen">Đời 1</div>
+      </div>
+      <div class="node-connector"></div>
+      <div class="node-children">
+        <div class="node">
+          <div class="node-name">Trần Khắc A</div>
+          <div class="node-gen">Đời 2</div>
+        </div>
+        <div class="node">
+          <div class="node-name">Trần Văn C</div>
+          <div class="node-gen">Đời 2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (selectedMember) {
+    <div class="side-panel glass-card">
+      <div class="panel-header">
+        <h3>Phả Ký Chi Tiết</h3>
+        <button class="btn-close" (click)="selectedMember = false">×</button>
+      </div>
+      
+      <div class="member-detail">
+        <h4>Trần Khắc A</h4>
+        <p><strong>Đời thứ:</strong> 2</p>
+        <p><strong>Năm sinh:</strong> 1890</p>
+        <p><strong>Năm mất:</strong> 1960</p>
+        <p><strong>Tiểu sử:</strong><br>
+        Ông là con trưởng của cụ Thủy tổ, có công khai hoang lập ấp...</p>
+        
+        <button class="btn btn-primary full-width mt-4">Sửa thông tin</button>
+      </div>
+    </div>
+  }
+</div>

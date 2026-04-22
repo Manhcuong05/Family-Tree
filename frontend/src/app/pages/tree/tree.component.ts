@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './tree.component.scss'
 })
 export class TreeComponent {
-
+  selectedMember = true; // Show by default for demo
 }

@@ -1,0 +1,148 @@
+.tree-layout {
+  display: flex;
+  gap: 2rem;
+  height: calc(100vh - 120px);
+}
+
+.tree-canvas {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 4rem;
+  overflow: auto;
+}
+
+.tree-controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tree-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.node {
+  background-color: var(--color-surface);
+  border: 1px solid #E0C0B2;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  min-width: 150px;
+  
+  &:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 6px 12px rgba(211, 84, 0, 0.1);
+  }
+}
+
+.node-root {
+  background-color: #FDF2F8;
+  border-color: var(--color-primary);
+}
+
+.node-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-secondary);
+  font-size: 1.1rem;
+}
+
+.node-gen {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.node-connector {
+  width: 2px;
+  height: 30px;
+  background-color: #E0C0B2;
+}
+
+.node-children {
+  display: flex;
+  gap: 2rem;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    right: 25%;
+    height: 2px;
+    background-color: #E0C0B2;
+  }
+  
+  .node {
+    margin-top: 20px;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background-color: #E0C0B2;
+    }
+  }
+}
+
+.side-panel {
+  width: 350px;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #E0C0B2;
+  padding-bottom: 0.5rem;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.member-detail {
+  h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  p {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
