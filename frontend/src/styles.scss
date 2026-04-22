@@ -1,0 +1,109 @@
+/* Master Project Rules - The Digital Heirloom */
+
+:root {
+  /* Colors */
+  --color-primary: #D35400; /* Earth Orange */
+  --color-primary-dark: #A04000;
+  --color-secondary: #2C3E50; /* Royal Blue */
+  --color-background: #F9F6F0; /* Cream / Do Paper */
+  --color-surface: #FFFFFF;
+  --color-text-main: #1C1C18; /* Soft black for readability */
+  --color-text-muted: #594238;
+
+  /* Typography */
+  --font-heading: 'Noto Serif', serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+
+  /* Spacing & Sizes */
+  --touch-target: 44px; /* Accessible minimum */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-text-main);
+  font-family: var(--font-body);
+  font-size: 16px; /* Elder-friendly baseline */
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-secondary);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* Base button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-target);
+  padding: 0 1.5rem;
+  border-radius: 22px;
+  border: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(211, 84, 0, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 84, 0, 0.3);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.05);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-control {
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border: 1px solid #E0C0B2;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(211, 84, 0, 0.1); /* Accessible focus ring */
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 1.5rem; }
+.mb-4 { margin-bottom: 1.5rem; }
