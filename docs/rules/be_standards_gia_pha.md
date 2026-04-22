@@ -20,6 +20,8 @@ Dựa trên phân tích các website gia phả (như Gia Phả Số), BE phải 
 - Hệ thống cần một CronJob/Scheduler (`@Scheduled` trong Spring) chạy mỗi ngày lúc 00:00 để kiểm tra ngày mất (`ngay_mat`) của các thành viên.
 - Nếu sắp đến ngày giỗ (cách 3-7 ngày), phải đẩy Notification hoặc Email cho các thành viên trong họ báo về sự kiện này.
 - **Xử lý Ngày Âm/Dương**: Các gia phả tại Việt Nam ghi nhận ngày mất chủ yếu là **Ngày Âm lịch**. Backend bắt buộc phải có một hàm tiện ích (Utility) xài thuật toán chuyển đổi thống nhất Âm Dương (Lunisolar Converter) để tính toán chính xác ngày giỗ hàng năm.
+- **Port Management**: Luôn kiểm tra và giải phóng cổng (mặc định 8080) sau khi chạy hoặc test server để tránh lỗi "Address already in use".
+- **Bảo mật**: Tuyệt đối không commit file `.env` lên Git. Luôn sử dụng placeholders trong `application.yml`.
 
 ## 4. Bảo mật API
 - **RBAC (Role Based Access Control)**:

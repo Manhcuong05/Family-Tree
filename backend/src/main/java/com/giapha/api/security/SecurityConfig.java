@@ -31,8 +31,9 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**").permitAll() // Login/Register endpoints
-                .requestMatchers("/api/v1/members/tree/**").permitAll() // Public tree view
+                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register").permitAll()
+                .requestMatchers("/api/v1/auth/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/members/tree/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

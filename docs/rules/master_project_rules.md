@@ -76,4 +76,6 @@ Kiểm tra sức bền kiến trúc tầng Service:
 
 ## 4. Tiêu Chuẩn Trợ Lý AI (AI Assistant Rules)
 
-- **Xác nhận hoàn thành**: Mỗi lần đọc doc và thực hiện code thì phải có dòng `đã hoàn thành công việc` ở cuối câu trả lời để người dùng có thể nhận biết được rằng AI đang bám sát và tuân theo rule đã đề ra.
+- **Xác nhận hoàn thành**: Mỗi khi thực hiện xong công việc phải có dòng "đã hoàn thành công việc" ở cuối.
+- Tự động kiểm tra và kill các cổng (ví dụ 8080) sau khi kết thúc quá trình chạy hoặc test để đảm bảo môi trường sạch cho lần chạy sau.
+- Luôn ưu tiên sử dụng `multi_replace_file_content` khi sửa code.

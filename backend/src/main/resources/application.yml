@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/giapha_db
-    username: postgres
-    password: password
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -12,9 +12,8 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  jackson:
-    serialization:
-      write-dates-as-timestamps: false
+# Jackson config removed due to version compatibility issues in 4.0.5
+
 
 server:
   port: 8080
@@ -22,5 +21,5 @@ server:
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-      expiration: 86400000 # a day
+      secret-key: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION}
