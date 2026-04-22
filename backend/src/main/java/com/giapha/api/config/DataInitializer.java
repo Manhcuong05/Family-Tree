@@ -17,15 +17,11 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Create default SUPER ADMIN if not exists
-        if (userRepository.findByUsername("admin").isEmpty()) {
-            User admin = User.builder()
-                    .username("admin")
-                    .password(passwordEncoder.encode("admin123")) // Default password
-                    .role(Role.ADMIN)
-                    .build();
-            userRepository.save(admin);
-            System.out.println("Default Admin account created: admin / admin123");
-        }
+        User admin = userRepository.findByUsername("admin").orElseGet(() -> 
+            User.builder().username("admin").role(Role.ADMIN).build()
+        );
+        admin.setPassword(passwordEncoder.encode("admin123"));
+        userRepository.save(admin);
+        System.out.println("Admin account guaranteed to be: admin / admin123");
     }
 }

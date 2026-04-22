@@ -8,7 +8,11 @@
     <a routerLink="/members" routerLinkActive="active">Thành Viên</a>
   </div>
   <div class="nav-auth">
-    <button class="btn btn-primary" routerLink="/auth">Đăng Nhập</button>
+    @if (authService.isLoggedIn()) {
+      <button class="btn btn-secondary" (click)="logout()">Đăng Xuất</button>
+    } @else {
+      <button class="btn btn-primary" routerLink="/auth">Đăng Nhập</button>
+    }
   </div>
 </nav>
 
