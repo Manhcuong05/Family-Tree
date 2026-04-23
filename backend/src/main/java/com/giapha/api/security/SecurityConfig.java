@@ -33,6 +33,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register", "/error").permitAll()
+                .requestMatchers("/api/files/**").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/members/**").permitAll()
                 .requestMatchers("/api/v1/auth/admin/**", "/api/v1/members/**").authenticated()
                 .anyRequest().authenticated()

@@ -1,114 +1,151 @@
-<div class="header-actions">
-  <div class="title-group">
-    <h2>Danh Sách Thành Viên</h2>
-    <span class="badge">{{ members.length }} thành viên</span>
-  </div>
-  <div class="actions-group">
-    <div class="search-box">
-      <input type="text" class="form-input" placeholder="Tìm kiếm thành viên..." [(ngModel)]="searchTerm">
+<div class="page-container mt-4">
+  <div class="glass-card">
+    <div class="header-actions">
+      <div class="title-group">
+        <h2>Danh Sách Thành Viên</h2>
+        <span class="badge">{{ members.length }} thành viên</span>
+      </div>
+      <div class="actions-group">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Tìm kiếm thành viên..." class="form-input search-bar">
+        <button class="btn btn-primary" (click)="toggleAddForm()">
+          {{ isAdding ? 'Hủy' : '+ Thêm Thành Viên' }}
+        </button>
+      </div>
     </div>
-    <button class="btn btn-primary" (click)="toggleAddForm()">
-      {{ isAdding ? 'Hủy' : '+ Thêm Thành Viên' }}
-    </button>
-  </div>
-</div>
 
-@if (isAdding) {
-  <div class="glass-card mt-4 p-4">
-    <h3 class="mb-4">Thêm Thành Viên Mới</h3>
-    <form (ngSubmit)="onSubmit()" #memberForm="ngForm">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Họ và Tên</label>
-          <input type="text" name="hoTen" class="form-input" [(ngModel)]="newMember.hoTen" required placeholder="Nhập họ tên...">
-        </div>
-        <div class="col-md-3 mb-3">
-          <label class="form-label">Giới Tính</label>
-          <select name="gioiTinh" class="form-select" [(ngModel)]="newMember.gioiTinh">
-            <option value="NAM">Nam</option>
-            <option value="NU">Nữ</option>
-          </select>
-        </div>
-        <div class="col-md-3 mb-3">
-          <label class="form-label">Đời Thứ</label>
-          <input type="number" name="soDoi" class="form-input" [(ngModel)]="newMember.soDoi" min="1" [disabled]="!!parentId">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Cha/Mẹ (nếu có)</label>
-          <select name="parentId" class="form-select" [(ngModel)]="parentId" (change)="onParentChange()">
-            <option value="">-- Chọn Cha/Mẹ (Tổ Phụ) --</option>
-            @for (m of members; track m.id) {
-              <option [value]="m.id">{{ m.hoTen }} (Đời {{ m.soDoi }})</option>
+    @if (isAdding) {
+    <div class="add-form mt-4 traditional-border">
+      <h3>Thêm Thành Viên Mới</h3>
+      <div class="form-grid">
+        <div class="avatar-section">
+          <div class="avatar-upload" (click)="fileInput.click()">
+            @if (previewUrl) {
+            <img [src]="previewUrl" alt="Preview">
+            } @else {
+            <div class="upload-placeholder">
+              <span class="icon">📷</span>
+              <span class="text">Chọn ảnh</span>
+            </div>
             }
-          </select>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Loại Quan Hệ</label>
-          <select name="relationshipType" class="form-select" [(ngModel)]="relationshipType">
-            <option value="RUOT">Con Ruột</option>
-            <option value="NUOI">Con Nuôi</option>
-            <option value="VO_CHONG">Vợ / Chồng</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <label class="form-label">Còn sống?</label>
-          <select name="isAlive" class="form-select" [(ngModel)]="newMember.isAlive">
-            <option [ngValue]="true">Còn sống</option>
-            <option [ngValue]="false">Đã mất</option>
-          </select>
-        </div>
-        <div class="col-md-4 mb-3">
-          <label class="form-label">Ngày sinh (Âm lịch)</label>
-          <input type="text" name="ngaySinhAmLich" class="form-input" [(ngModel)]="newMember.ngaySinhAmLich" placeholder="Ví dụ: 15/08">
-        </div>
-        @if (!newMember.isAlive) {
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Ngày mất (Âm lịch)</label>
-            <input type="text" name="ngayMatAmLich" class="form-input" [(ngModel)]="newMember.ngayMatAmLich" placeholder="Ví dụ: 20/12">
           </div>
-        }
-      </div>
-      <div class="mt-4">
-        <button type="submit" class="btn btn-primary" [disabled]="!memberForm.valid">Lưu Thành Viên</button>
-      </div>
-    </form>
-  </div>
-}
+          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none">
+          <p class="help-text">Nhấp để tải ảnh đại diện</p>
+        </div>
 
-<div class="glass-card mt-4">
-  <div class="table-responsive">
-    <table class="member-table">
-      <thead>
-        <tr>
-          <th>Họ Tên</th>
-          <th>Đời Thứ</th>
-          <th>Giới Tính</th>
-          <th>Năm Sinh</th>
-          <th>Thao Tác</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (member of filteredMembers; track member.id) {
+        <div class="form-fields">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Họ và Tên</label>
+              <input type="text" [(ngModel)]="newMember.hoTen" placeholder="Nhập họ tên..." class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Giới Tính</label>
+              <select [(ngModel)]="newMember.gioiTinh" class="form-select">
+                <option value="NAM">Nam</option>
+                <option value="NU">Nữ</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Đời Thứ</label>
+              <input type="number" [(ngModel)]="newMember.soDoi" class="form-input" disabled>
+            </div>
+            <div class="form-group flex-2">
+              <label>{{ relationshipType === 'VO_CHONG' ? 'Vợ/Chồng của' : 'Cha/Mẹ (nếu có)' }}</label>
+              <select [(ngModel)]="parentId" (change)="onParentChange()" class="form-select">
+                <option value="">-- {{ relationshipType === 'VO_CHONG' ? 'Chọn người kết hôn' : 'Chọn Cha/Mẹ (Tổ Phụ)'
+                  }} --</option>
+                @for (m of members; track m.id) {
+                <option [value]="m.id">{{ m.hoTen }} (Đời {{ m.soDoi }})</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Loại Quan Hệ</label>
+              <select [(ngModel)]="relationshipType" (change)="onParentChange()" class="form-select">
+                <option value="RUOT">Con Ruột</option>
+                <option value="NUOI">Con Nuôi</option>
+                <option value="VO_CHONG">Vợ/Chồng</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Còn sống?</label>
+              <select [(ngModel)]="newMember.isAlive" class="form-select">
+                <option [ngValue]="true">Còn sống</option>
+                <option [ngValue]="false">Đã mất</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ngày sinh (Âm lịch)</label>
+              <input type="text" [(ngModel)]="newMember.ngaySinhAmLich" placeholder="Ví dụ: 15/08" class="form-input">
+            </div>
+            @if (!newMember.isAlive) {
+            <div class="form-group">
+              <label>Ngày mất (Âm lịch)</label>
+              <input type="text" [(ngModel)]="newMember.ngayMatAmLich" placeholder="Ví dụ: 20/12" class="form-input">
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions mt-4">
+        <button class="btn btn-primary" (click)="onSubmit()">Lưu Thành Viên</button>
+      </div>
+    </div>
+    }
+
+    <div class="table-container mt-4">
+      <table class="member-table">
+        <thead>
           <tr>
-            <td>{{ member.hoTen }}</td>
-            <td>{{ member.soDoi }}</td>
-            <td>{{ member.gioiTinh === 'NAM' ? 'Nam' : 'Nữ' }}</td>
-            <td>{{ member.namSinhDuDoan || 'Chưa rõ' }}</td>
+            <th>Ảnh</th>
+            <th>Họ Tên</th>
+            <th>Đời Thứ</th>
+            <th>Giới Tính</th>
+            <th>Trạng Thái</th>
+            <th>Thao Tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of filteredMembers; track m.id) {
+          <tr>
             <td>
-              <button class="btn btn-secondary btn-sm" (click)="deleteMember(member.id)">Xoá</button>
+              <div class="table-avatar-container">
+                <img [src]="m.avatarUrl ? (backendUrl + m.avatarUrl) : 'assets/images/default-avatar.png'"
+                  class="table-avatar">
+              </div>
+            </td>
+            <td class="bold">{{ m.hoTen }}</td>
+            <td><span class="badge-generation">Đời {{ m.soDoi }}</span></td>
+            <td>{{ m.gioiTinh === 'NAM' ? 'Nam' : 'Nữ' }}</td>
+            <td>
+              <span class="status-indicator" [class.alive]="m.isAlive">
+                {{ m.isAlive ? 'Còn sống' : 'Đã mất' }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button class="btn-icon edit" (click)="editMember(m)" title="Sửa">
+                  <span class="icon">✏️</span>
+                </button>
+                <button class="btn-icon delete" (click)="deleteMember(m.id)" title="Xóa">
+                  <span class="icon">🗑️</span>
+                </button>
+              </div>
             </td>
           </tr>
-        } @empty {
-          <tr>
-            <td colspan="5" class="text-center">Chưa có dữ liệu thành viên.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
-

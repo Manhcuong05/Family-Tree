@@ -1,0 +1,303 @@
+/* CSS Custom Property for branch color — set per instance */
+:host {
+  --branch-color: #d35400;
+}
+
+.tree-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+}
+
+/* ===================================================
+   COUPLE ROW — main person + spouse side by side
+   =================================================== */
+.node-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* ===================================================
+   NODE CARD
+   =================================================== */
+.node-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 160px;
+  position: relative;
+  background: #130e04;
+  border: 2px solid var(--branch-color, #d35400);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    filter: brightness(1.1);
+  }
+
+  &.selected {
+    box-shadow: 0 0 0 3px var(--branch-color, #d35400);
+    background: #1e1408;
+  }
+
+  &.deceased {
+    filter: saturate(0.4) brightness(0.8);
+    border-style: dashed;
+  }
+
+  /* Spouse card — always purple-ish border */
+  &.spouse-card {
+    border-color: #8e44ad;
+    background: #12091a;
+    min-width: 140px;
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(142, 68, 173, 0.35);
+    }
+  }
+}
+
+/* ===================================================
+   AVATAR
+   =================================================== */
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    display: block;
+  }
+
+  .gender-dot {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #2980b9;
+    /* male = blue */
+    border: 1px solid #0e0a04;
+
+    &.female {
+      background: #e91e90;
+    }
+
+    /* female = pink */
+  }
+}
+
+/* ===================================================
+   NODE INFO
+   =================================================== */
+.node-info {
+  flex: 1;
+  min-width: 0;
+
+  .node-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #f5e6cc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 110px;
+  }
+
+  .node-meta {
+    font-size: 0.7rem;
+    color: var(--branch-color, #d35400);
+    font-weight: 600;
+    margin-top: 1px;
+  }
+
+  .spouse-label {
+    color: #8e44ad;
+  }
+}
+
+/* Relationship tag: con nuôi / con riêng / dâu-rể */
+.rel-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  &.rel-nuoi {
+    background: rgba(39, 174, 96, 0.2);
+    color: #27ae60;
+    border: 1px solid #27ae60;
+  }
+
+  &.rel-rieng {
+    background: rgba(41, 128, 185, 0.2);
+    color: #2980b9;
+    border: 1px solid #2980b9;
+  }
+
+  &.rel-dau_re {
+    background: rgba(127, 140, 141, 0.2);
+    color: #95a5a6;
+    border: 1px solid #95a5a6;
+  }
+}
+
+/* ===================================================
+   SPOUSE CONNECTOR: ── ⚭ ──
+   =================================================== */
+.spouse-connector {
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  .connector-line {
+    width: 20px;
+    height: 2px;
+    background: #8e44ad;
+  }
+
+  .marriage-icon {
+    font-size: 1.1rem;
+    color: #c39bd3;
+    line-height: 1;
+    cursor: default;
+    user-select: none;
+    padding: 0 4px;
+
+    &.divorced {
+      color: #e74c3c;
+    }
+
+    sub {
+      font-size: 0.55rem;
+      vertical-align: super;
+    }
+  }
+}
+
+/* ===================================================
+   TOGGLE BUTTON (collapse/expand)
+   =================================================== */
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2px 7px;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 0.65rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  &.collapsed {
+    color: var(--branch-color, #d35400);
+    border-color: var(--branch-color, #d35400);
+  }
+
+  .count-badge {
+    background: var(--branch-color, #d35400);
+    color: white;
+    border-radius: 10px;
+    padding: 0 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+  }
+}
+
+/* Collapsed pill */
+.collapsed-pill {
+  margin-top: 6px;
+  padding: 4px 14px;
+  border: 1px dashed;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  animation: fadeIn 0.2s ease;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===================================================
+   CONNECTOR LINES (children)
+   =================================================== */
+.children-connector {
+  width: 2px;
+  height: 36px;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.children-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: inherit;
+    /* inherits from JS color via style binding on parent */
+    background-color: #d35400;
+    /* fallback */
+  }
+
+  &.single::before {
+    display: none;
+  }
+}
+
+.child-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .child-drop {
+    width: 2px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+}

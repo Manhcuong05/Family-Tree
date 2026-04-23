@@ -11,5 +11,9 @@ import java.util.UUID;
 public interface RelationshipRepository extends JpaRepository<Relationship, UUID> {
     List<Relationship> findByParentId(UUID parentId);
     List<Relationship> findByChildId(UUID childId);
+
+    boolean existsByParentId(UUID parentId);
+    boolean existsByChildId(UUID childId);
+    void deleteByChildId(UUID childId);
     boolean existsByParentIdAndChildId(UUID parentId, UUID childId);
 }

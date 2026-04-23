@@ -2,7 +2,7 @@ package com.giapha.api.controller;
 
 import com.giapha.api.dto.AddRelationshipRequest;
 import com.giapha.api.dto.CreateMemberRequest;
-import com.giapha.api.dto.MemberFlatDto;
+import com.giapha.api.dto.UpdateMemberRequest;
 import com.giapha.api.entity.Member;
 import com.giapha.api.entity.Relationship;
 import com.giapha.api.service.MemberService;
@@ -34,19 +34,29 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Member>> getAllMembers() {
-        return ResponseEntity.ok(memberRepository.findAll());
+    public ResponseEntity<List<com.giapha.api.dto.MemberListItemDto>> getAllMembers() {
+        return ResponseEntity.ok(memberService.getAllMembersWithParent());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Member> getMemberById(@PathVariable UUID id) {
+        return ResponseEntity.ok(memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found")));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Member> updateMember(@PathVariable UUID id, @RequestBody UpdateMemberRequest request) {
+        return ResponseEntity.ok(memberService.updateMember(id, request.getMember(), request.getParentId(), request.getRelationshipType()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMember(@PathVariable UUID id) {
-        memberRepository.deleteById(id);
+        memberService.deleteMember(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/tree/{rootId}")
-    public ResponseEntity<List<MemberFlatDto>> getFamilyTree(@PathVariable UUID rootId) {
-        List<MemberFlatDto> tree = memberService.getFamilyTreeFlat(rootId);
-        return ResponseEntity.ok(tree);
+    public ResponseEntity<List<com.giapha.api.dto.TreeNodeDto>> getFamilyTree(@PathVariable UUID rootId) {
+        return ResponseEntity.ok(memberService.getFamilyTreeFlat(rootId));
     }
 }

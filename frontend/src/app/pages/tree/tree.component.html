@@ -1,42 +1,129 @@
 <div class="tree-layout">
-  <div class="tree-canvas glass-card">
+
+  <!-- ═══════════════════════════════════
+       CANVAS
+       ═══════════════════════════════════ -->
+  <div class="tree-canvas">
+
+    <!-- Controls -->
     <div class="tree-controls">
-      <button class="btn btn-secondary btn-sm">+</button>
-      <button class="btn btn-secondary btn-sm">-</button>
-      <button class="btn btn-secondary btn-sm">Mặc định</button>
+      <button class="ctrl-btn" (click)="zoom(0.1)" title="Phóng to">＋</button>
+      <button class="ctrl-btn" (click)="zoom(-0.1)" title="Thu nhỏ">－</button>
+      <button class="ctrl-btn" (click)="resetZoom()" title="Đặt lại">↺</button>
     </div>
-    
-    <!-- Placeholder for OrgChart / Canvas -->
-    <div class="tree-viewport">
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-title">Chú thích</div>
+      <div class="legend-row"><span class="dot male"></span> Nam</div>
+      <div class="legend-row"><span class="dot female"></span> Nữ</div>
+      <div class="legend-divider"></div>
+      <div class="legend-row"><span class="line solid"></span> Con ruột</div>
+      <div class="legend-row"><span class="line dashed green"></span> Con nuôi</div>
+      <div class="legend-row"><span class="line dotted blue"></span> Con riêng</div>
+      <div class="legend-row"><span class="symbol">⚭</span> Kết hôn</div>
+      <div class="legend-row"><span class="symbol red">🚫</span> Ly hôn</div>
+    </div>
+
+    <!-- Viewport -->
+    <div class="tree-viewport" [style.transform]="'scale(' + scale + ')'" [style.transform-origin]="'top center'">
       @if (treeData) {
-        <app-tree-node 
-          [node]="treeData" 
-          [selectedNodeId]="selectedMember?.id"
-          (select)="selectNode($event)">
-        </app-tree-node>
+      <app-tree-node [node]="treeData" [selectedNodeId]="selectedMember?.id || ''" [selectedSpouseId]="selectedSpouseId"
+        [branchColor]="'#d35400'" (select)="selectNode($event)" (selectSpouse)="selectSpouse($event)">
+      </app-tree-node>
       } @else {
-        <div class="empty-tree">Đang tải dữ liệu phả đồ...</div>
+      <div class="empty-state">
+        <div class="spinner"></div>
+        <p>Đang kiến tạo phả đồ...</p>
+      </div>
       }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════
+       SIDE PANEL
+       ═══════════════════════════════════ -->
   @if (selectedMember) {
-    <div class="side-panel glass-card">
-      <div class="panel-header">
-        <h3>Phả Ký Chi Tiết</h3>
-        <button class="btn-close" (click)="selectedMember = null">×</button>
+  <div class="side-panel">
+    <div class="panel-header">
+      <h3>{{ panelTitle }}</h3>
+      <button class="btn-close" (click)="selectedMember = null">✕</button>
+    </div>
+
+    <div class="profile-hero">
+      <div class="avatar-wrap-lg">
+        <img [src]="getAvatarUrl(selectedMember.avatarUrl)" (error)="onImgError($event)" alt="Avatar">
       </div>
-      
-      <div class="member-detail">
-        <h4>{{ selectedMember.name }}</h4>
-        <p><strong>Đời thứ:</strong> {{ selectedMember.soDoi }}</p>
-        <p><strong>ID:</strong> <small>{{ selectedMember.id }}</small></p>
-        
-        <div class="mt-4">
-          <button class="btn btn-primary full-width mb-2">Xem chi tiết</button>
-          <button class="btn btn-secondary full-width">Chỉnh sửa</button>
-        </div>
+      <h2>{{ selectedMember.hoTen }}</h2>
+      <div class="badges">
+        @if (selectedMember.soDoi) {
+        <span class="badge gen">Đời thứ {{ selectedMember.soDoi }}</span>
+        }
+        <span class="badge" [class.alive]="selectedMember.isAlive" [class.dead]="!selectedMember.isAlive">
+          {{ selectedMember.isAlive ? '🟢 Còn sống' : '⚫ Đã mất' }}
+        </span>
+        @if (selectedMember._isSpouse) {
+        <span class="badge spouse-badge">Vợ / Chồng</span>
+        }
       </div>
     </div>
+
+    <div class="info-grid">
+      <div class="info-row">
+        <span class="label">Giới tính</span>
+        <span class="value">{{ selectedMember.gioiTinh === 'NAM' ? '♂ Nam' : '♀ Nữ' }}</span>
+      </div>
+      @if (selectedMember.ngaySinhAmLich) {
+      <div class="info-row">
+        <span class="label">Ngày sinh (ÂL)</span>
+        <span class="value">{{ selectedMember.ngaySinhAmLich }}</span>
+      </div>
+      }
+      @if (selectedMember.ngaySinh) {
+      <div class="info-row">
+        <span class="label">Ngày sinh (DL)</span>
+        <span class="value">{{ selectedMember.ngaySinh }}</span>
+      </div>
+      }
+      @if (selectedMember.namSinhDuDoan) {
+      <div class="info-row">
+        <span class="label">Năm sinh (ước tính)</span>
+        <span class="value">{{ selectedMember.namSinhDuDoan }}</span>
+      </div>
+      }
+      @if (!selectedMember.isAlive) {
+      @if (selectedMember.ngayMatAmLich) {
+      <div class="info-row">
+        <span class="label">Ngày mất (ÂL)</span>
+        <span class="value">{{ selectedMember.ngayMatAmLich }}</span>
+      </div>
+      }
+      @if (selectedMember.ngayGio) {
+      <div class="info-row">
+        <span class="label">Ngày giỗ</span>
+        <span class="value">{{ selectedMember.ngayGio }}</span>
+      </div>
+      }
+      }
+      @if (selectedMember.tenGoiKhac) {
+      <div class="info-row">
+        <span class="label">Tên gọi khác</span>
+        <span class="value">{{ selectedMember.tenGoiKhac }}</span>
+      </div>
+      }
+    </div>
+
+    @if (selectedMember.tieuSu) {
+    <div class="bio-section">
+      <div class="bio-label">📖 Tiểu sử</div>
+      <p>{{ selectedMember.tieuSu }}</p>
+    </div>
+    }
+
+    <div class="panel-footer">
+      <button class="btn-close-panel" (click)="selectedMember = null">Đóng</button>
+    </div>
+  </div>
   }
+
 </div>
