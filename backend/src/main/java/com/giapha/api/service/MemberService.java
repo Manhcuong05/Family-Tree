@@ -26,21 +26,31 @@ public class MemberService {
 
     @Transactional
     public Member createMember(Member member, UUID parentId, RelationshipType type) {
+        // Default branch ID for now
+        if (member.getBranchId() == null) {
+            member.setBranchId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        }
+
         if (parentId != null) {
-            Member parent = memberRepository.findById(parentId)
-                    .orElseThrow(() -> new IllegalArgumentException("Parent not found"));
+            Member relative = memberRepository.findById(parentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Relative (Parent/Spouse) not found"));
             
-            // Calculate Generation
-            member.setSoDoi(parent.getSoDoi() + 1);
+            if (type == RelationshipType.VO_CHONG) {
+                // Spouse belongs to the same generation
+                member.setSoDoi(relative.getSoDoi());
+            } else {
+                // Child belongs to the next generation
+                member.setSoDoi(relative.getSoDoi() + 1);
+                // Validate Age for parent-child relationship
+                validateAgeDifference(relative, member);
+            }
             
-            // Validate Age if birth dates are known
-            validateAgeDifference(parent, member);
-            
+            validateGeneration(member.getSoDoi());
             member = memberRepository.save(member);
             
             Relationship relationship = Relationship.builder()
-                    .parent(parent)
-                    .child(member)
+                    .parent(relative) // Repurposing 'parent' field for 'member1' in spouse case
+                    .child(member)   // Repurposing 'child' field for 'member2'
                     .loaiQuanHe(type != null ? type : RelationshipType.RUOT)
                     .build();
             relationshipRepository.save(relationship);
@@ -82,16 +92,29 @@ public class MemberService {
     }
 
     private void validateAgeDifference(Member parent, Member child) {
+        long ageDiff = 0;
         if (parent.getNgaySinh() != null && child.getNgaySinh() != null) {
-            long ageDiff = ChronoUnit.YEARS.between(parent.getNgaySinh(), child.getNgaySinh());
-            if (ageDiff < 12) {
-                throw new InvalidAgeException("Parent must be at least 12 years older than child. Current diff: " + ageDiff);
-            }
+            ageDiff = ChronoUnit.YEARS.between(parent.getNgaySinh(), child.getNgaySinh());
         } else if (parent.getNamSinhDuDoan() != null && child.getNamSinhDuDoan() != null) {
-            long ageDiff = child.getNamSinhDuDoan() - parent.getNamSinhDuDoan();
-            if (ageDiff < 12) {
-                throw new InvalidAgeException("Parent must be at least 12 years older than child based on estimated year.");
-            }
+            ageDiff = child.getNamSinhDuDoan() - parent.getNamSinhDuDoan();
+        } else {
+            return; // Cannot validate without dates
+        }
+
+        if (ageDiff < 0) {
+            throw new InvalidAgeException("Con không thể sinh trước cha/mẹ!");
+        }
+
+        if (ageDiff < 12 || ageDiff > 70) {
+            // According to rule 3.1: Warning if outside 12-70, but we'll throw for now as a strict rule
+            // In a real app, this would be a warning flag in the response
+            throw new InvalidAgeException("Cảnh báo: Khoảng cách tuổi giữa cha/mẹ và con (" + ageDiff + " tuổi) không hợp lệ (quy định 12-70).");
+        }
+    }
+
+    private void validateGeneration(Integer soDoi) {
+        if (soDoi < 1 || soDoi > 99) {
+            throw new IllegalArgumentException("Số đời không hợp lệ (quy định từ 1 đến 99).");
         }
     }
 

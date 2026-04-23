@@ -4,5 +4,6 @@ public enum RelationshipType {
     RUOT,
     NUOI,
     RIENG,
-    DAU_RE
+    DAU_RE,
+    VO_CHONG
 }

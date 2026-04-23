@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <div class="traditional-border glass-card">
+    <div class="info-header">
+      <h2 class="title">{{ info.tenDongHo || 'Thông Tin Dòng Họ' }}</h2>
+      <button class="btn btn-primary" (click)="isEditing = !isEditing">
+        {{ isEditing ? 'Hủy' : 'Chỉnh Sửa' }}
+      </button>
+    </div>
+
+    <div class="tabs-nav">
+      <button [class.active]="activeTab === 'general'" (click)="activeTab = 'general'">Tổng Quan</button>
+      <button [class.active]="activeTab === 'history'" (click)="activeTab = 'history'">Lịch Sử</button>
+      <button [class.active]="activeTab === 'location'" (click)="activeTab = 'location'">Nhà Thờ/Địa Chỉ</button>
+    </div>
+
+    <div class="tab-content mt-4">
+      <!-- General Tab -->
+      <div *ngIf="activeTab === 'general'">
+        <div *ngIf="!isEditing" class="view-mode">
+          <h4>Lời Ngỏ</h4>
+          <p class="rich-text">{{ info.loiNgo || 'Chưa có thông tin.' }}</p>
+        </div>
+        <div *ngIf="isEditing" class="edit-mode">
+          <label>Tên Dòng Họ</label>
+          <input type="text" [(ngModel)]="info.tenDongHo" class="form-control mb-3">
+          <label>Lời Ngỏ</label>
+          <textarea [(ngModel)]="info.loiNgo" class="form-control" rows="10"></textarea>
+        </div>
+      </div>
+
+      <!-- History Tab -->
+      <div *ngIf="activeTab === 'history'">
+        <div *ngIf="!isEditing" class="view-mode">
+          <h4>Lịch Sử Hình Thành</h4>
+          <p class="rich-text">{{ info.lichSu || 'Chưa có thông tin.' }}</p>
+        </div>
+        <div *ngIf="isEditing" class="edit-mode">
+          <textarea [(ngModel)]="info.lichSu" class="form-control" rows="15"></textarea>
+        </div>
+      </div>
+
+      <!-- Location Tab -->
+      <div *ngIf="activeTab === 'location'">
+        <div *ngIf="!isEditing" class="view-mode">
+          <h4>Địa Chỉ Nhà Thờ Họ</h4>
+          <p>{{ info.diaChiNhaTho || 'Chưa có thông tin.' }}</p>
+        </div>
+        <div *ngIf="isEditing" class="edit-mode">
+          <input type="text" [(ngModel)]="info.diaChiNhaTho" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions mt-4" *ngIf="isEditing">
+      <button class="btn btn-primary" (click)="save()">Lưu Thay Đổi</button>
+    </div>
+  </div>
+</div>

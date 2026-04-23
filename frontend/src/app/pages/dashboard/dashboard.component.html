@@ -1,57 +1,51 @@
-<div class="dashboard-header">
-  <h1>Trang Chủ Gia Phả</h1>
-  <p>Lưu giữ cội nguồn - Kết nối tương lai</p>
-</div>
-
-<div class="stats-bar mt-4">
-  <div class="glass-card stat-item">
-    <div class="stat-value">{{ totalMembers }}</div>
-    <div class="stat-label">Thành viên</div>
-  </div>
-  <div class="glass-card stat-item">
-    <div class="stat-value">1</div>
-    <div class="stat-label">Chi/Nhánh</div>
-  </div>
-  <div class="glass-card stat-item">
-    <div class="stat-value">2026</div>
-    <div class="stat-label">Năm hiện tại</div>
-  </div>
-</div>
-
-<div class="dashboard-grid mt-4">
-  <div class="glass-card">
-    <h3>Ngày Giỗ Sắp Tới</h3>
-    <ul class="anniversary-list">
-      <li>
-        <div class="date">15/08 (Âm lịch)</div>
-        <div class="info">
-          <strong>Cụ Trần Khắc ABC</strong>
-          <span>Đời thứ 2 - Chi Trưởng</span>
-        </div>
-        <button class="btn btn-secondary btn-sm">Thắp hương</button>
-      </li>
-      <li>
-        <div class="date">20/08 (Âm lịch)</div>
-        <div class="info">
-          <strong>Ông Trần XYZ</strong>
-          <span>Đời thứ 4 - Chi Nhánh 2</span>
-        </div>
-        <button class="btn btn-secondary btn-sm">Thắp hương</button>
-      </li>
-    </ul>
-  </div>
-
-  <div class="glass-card">
-    <h3>Tin Tức Dòng Họ</h3>
-    <div class="news-item">
-      <h4>Khánh thành cổng làng & Nhà thờ họ</h4>
-      <p>Buổi lễ diễn ra trang nghiêm với sự tham gia của đông đảo con cháu...</p>
-      <a href="#">Đọc tiếp</a>
+<div class="lineage-home" [style.backgroundImage]="'url(' + (lineageInfo.bannerUrl || '/assets/images/home-bg.png') + ')'">
+  <div class="overlay">
+    <div class="home-logo">
+      <img src="/assets/images/logo-giapha.png" alt="Logo">
+      <h2 class="lineage-name">{{ lineageInfo.tenDongHo || 'Dòng Họ Trần Vũ Bản' }}</h2>
     </div>
-    <div class="news-item mt-4">
-      <h4>Quỹ khuyến học năm 2026</h4>
-      <p>Báo cáo thu chi quỹ khuyến học và danh sách các cháu đạt thành tích tốt...</p>
-      <a href="#">Đọc tiếp</a>
+
+    <div class="welcome-text">
+      Xin kính chào <span class="user-name">Quý thành viên</span>
+    </div>
+
+    <div class="quick-stats">
+      <div class="stat-box">
+        <span class="icon">👥</span>
+        <span class="label">Số thành viên:</span>
+        <span class="value">{{ stats.totalMembers }}</span>
+      </div>
+      <div class="stat-box">
+        <span class="icon">👴</span>
+        <span class="label">Tổ phụ:</span>
+        <span class="value">Chưa rõ</span>
+      </div>
+      <div class="stat-box">
+        <span class="icon">📉</span>
+        <span class="label">Số đời:</span>
+        <span class="value">{{ stats.maxGeneration }}</span>
+      </div>
+    </div>
+
+    <div class="menu-grid">
+      <a routerLink="/members" class="menu-item">
+        <div class="cloud-banner">XÂY DỰNG PHẢ HỆ</div>
+      </a>
+      <a routerLink="/tree" class="menu-item">
+        <div class="cloud-banner">PHẢ ĐỒ</div>
+      </a>
+      <a routerLink="/info" class="menu-item">
+        <div class="cloud-banner">THÔNG TIN DÒNG HỌ</div>
+      </a>
+      <a routerLink="/chronicles" class="menu-item">
+        <div class="cloud-banner">PHẢ KÝ DÒNG HỌ</div>
+      </a>
+      <a routerLink="/list" class="menu-item">
+        <div class="cloud-banner">DANH SÁCH THÀNH VIÊN</div>
+      </a>
+      <a routerLink="/events" class="menu-item">
+        <div class="cloud-banner">SỰ KIỆN DÒNG HỌ</div>
+      </a>
     </div>
   </div>
 </div>

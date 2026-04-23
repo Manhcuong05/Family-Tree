@@ -17,7 +17,9 @@ export class MembersComponent implements OnInit {
     hoTen: '',
     gioiTinh: 'NAM',
     soDoi: 1,
-    namSinhDuDoan: null
+    isAlive: true,
+    ngaySinhAmLich: '',
+    ngayMatAmLich: ''
   };
   parentId: string = '';
   relationshipType: string = 'RUOT';
@@ -51,21 +53,53 @@ export class MembersComponent implements OnInit {
     this.isAdding = !this.isAdding;
   }
 
+  onParentChange() {
+    if (this.parentId) {
+      const parent = this.members.find(m => m.id === this.parentId);
+      if (parent) {
+        this.newMember.soDoi = parent.soDoi + 1;
+      }
+    } else {
+      this.newMember.soDoi = 1;
+    }
+  }
+
   onSubmit() {
+    if (!this.newMember.hoTen) {
+      alert('Vui lòng nhập họ tên!');
+      return;
+    }
+
     const payload = {
-      member: this.newMember,
+      member: { ...this.newMember },
       parentId: this.parentId || null,
       relationshipType: this.relationshipType
     };
+
     this.memberService.addMember(payload).subscribe({
       next: () => {
+        alert('Thêm thành viên thành công!');
         this.loadMembers();
         this.isAdding = false;
-        this.newMember = { hoTen: '', gioiTinh: 'NAM', soDoi: 1 };
-        this.parentId = '';
+        this.resetForm();
       },
-      error: (err) => console.error('Error adding member:', err)
+      error: (err) => {
+        console.error('Error adding member:', err);
+        alert('Có lỗi xảy ra: ' + (err.error?.message || 'Lỗi hệ thống'));
+      }
     });
+  }
+
+  resetForm() {
+    this.newMember = { 
+      hoTen: '', 
+      gioiTinh: 'NAM', 
+      soDoi: 1, 
+      isAlive: true,
+      ngaySinhAmLich: '',
+      ngayMatAmLich: ''
+    };
+    this.parentId = '';
   }
 
   deleteMember(id: string) {

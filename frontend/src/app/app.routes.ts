@@ -11,5 +11,6 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'members', component: MembersComponent },
     { path: 'tree', component: TreeComponent },
+    { path: 'info', loadComponent: () => import('./pages/lineage-info/lineage-info.component').then(m => m.LineageInfoComponent) },
     { path: 'admin', component: AdminComponent }
 ];

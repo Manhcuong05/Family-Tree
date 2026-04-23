@@ -1,22 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { MemberService } from '../../core/services/member.service';
+import { LineageService } from '../../core/services/lineage.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  totalMembers = 0;
+  stats: any = {
+    totalMembers: 0,
+    males: 0,
+    females: 0,
+    maxGeneration: 0
+  };
+  lineageInfo: any = {};
 
-  constructor(private memberService: MemberService) {}
+  constructor(private lineageService: LineageService) {}
 
   ngOnInit(): void {
-    this.memberService.getAllMembers().subscribe({
-      next: (data) => this.totalMembers = data.length,
+    // Branch ID fixed to 1 for demo or fetched from Auth
+    const branchId = '00000000-0000-0000-0000-000000000001'; 
+    
+    this.lineageService.getStats(branchId).subscribe({
+      next: (data) => this.stats = data,
       error: (err) => console.error('Error fetching stats:', err)
+    });
+
+    this.lineageService.getInfo(branchId).subscribe({
+      next: (data) => this.lineageInfo = data,
+      error: (err) => console.error('Error fetching info:', err)
     });
   }
 }

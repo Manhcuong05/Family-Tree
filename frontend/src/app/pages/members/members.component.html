@@ -31,14 +31,14 @@
         </div>
         <div class="col-md-3 mb-3">
           <label class="form-label">Đời Thứ</label>
-          <input type="number" name="soDoi" class="form-input" [(ngModel)]="newMember.soDoi" min="1">
+          <input type="number" name="soDoi" class="form-input" [(ngModel)]="newMember.soDoi" min="1" [disabled]="!!parentId">
         </div>
       </div>
       <div class="row">
         <div class="col-md-6 mb-3">
           <label class="form-label">Cha/Mẹ (nếu có)</label>
-          <select name="parentId" class="form-select" [(ngModel)]="parentId">
-            <option value="">-- Chọn Cha/Mẹ --</option>
+          <select name="parentId" class="form-select" [(ngModel)]="parentId" (change)="onParentChange()">
+            <option value="">-- Chọn Cha/Mẹ (Tổ Phụ) --</option>
             @for (m of members; track m.id) {
               <option [value]="m.id">{{ m.hoTen }} (Đời {{ m.soDoi }})</option>
             }
@@ -47,13 +47,34 @@
         <div class="col-md-6 mb-3">
           <label class="form-label">Loại Quan Hệ</label>
           <select name="relationshipType" class="form-select" [(ngModel)]="relationshipType">
-            <option value="RUOT">Ruột</option>
-            <option value="NUOI">Nuôi</option>
-            <option value="DAU_RE">Dâu/Rể</option>
+            <option value="RUOT">Con Ruột</option>
+            <option value="NUOI">Con Nuôi</option>
+            <option value="VO_CHONG">Vợ / Chồng</option>
           </select>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!memberForm.valid">Lưu Thành Viên</button>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Còn sống?</label>
+          <select name="isAlive" class="form-select" [(ngModel)]="newMember.isAlive">
+            <option [ngValue]="true">Còn sống</option>
+            <option [ngValue]="false">Đã mất</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Ngày sinh (Âm lịch)</label>
+          <input type="text" name="ngaySinhAmLich" class="form-input" [(ngModel)]="newMember.ngaySinhAmLich" placeholder="Ví dụ: 15/08">
+        </div>
+        @if (!newMember.isAlive) {
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Ngày mất (Âm lịch)</label>
+            <input type="text" name="ngayMatAmLich" class="form-input" [(ngModel)]="newMember.ngayMatAmLich" placeholder="Ví dụ: 20/12">
+          </div>
+        }
+      </div>
+      <div class="mt-4">
+        <button type="submit" class="btn btn-primary" [disabled]="!memberForm.valid">Lưu Thành Viên</button>
+      </div>
     </form>
   </div>
 }

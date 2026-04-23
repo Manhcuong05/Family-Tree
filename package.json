@@ -1,0 +1,14 @@
+{
+  "name": "giapha-monorepo",
+  "version": "1.0.0",
+  "description": "Genealogy Management System",
+  "scripts": {
+    "install:all": "npm install --prefix frontend",
+    "dev:be": "cd backend && export $(cat .env | xargs) && mvn spring-boot:run",
+    "dev:fe": "cd frontend && npm start",
+    "dev": "echo 'Vui lòng sử dụng các tab terminal riêng biệt hoặc VS Code Tasks'"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

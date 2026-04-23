@@ -1,18 +1,18 @@
 /* Master Project Rules - The Digital Heirloom */
 
 :root {
-  /* Colors */
-  --color-primary: #D35400; /* Earth Orange */
-  --color-primary-dark: #A04000;
-  --color-secondary: #2C3E50; /* Royal Blue */
-  --color-background: #F9F6F0; /* Cream / Do Paper */
-  --color-surface: #FFFFFF;
-  --color-text-main: #1C1C18; /* Soft black for readability */
-  --color-text-muted: #594238;
+  /* Colors - Traditional Theme */
+  --color-primary: #D35400; /* Cam đất - Accent/CTA */
+  --color-secondary: #4A3B32; /* Nâu gỗ trầm - Secondary */
+  --color-background: #F9F6F0; /* Kem sáng - Main Background */
+  --color-surface: #FCF5E5;
+  --color-text-main: #2D241E; 
+  --color-text-muted: #5D4037;
+  --color-gold: #D4AF37; /* Vàng kim mờ */
 
   /* Typography */
   --font-heading: 'Noto Serif', serif;
-  --font-body: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Inter', sans-serif;
 
   /* Spacing & Sizes */
   --touch-target: 44px; /* Accessible minimum */
@@ -22,14 +22,36 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--color-background);
+  background-image: radial-gradient(var(--color-surface) 1px, transparent 1px);
+  background-size: 20px 20px;
   color: var(--color-text-main);
   font-family: var(--font-body);
-  font-size: 16px; /* Elder-friendly baseline */
+  font-size: 16px;
   line-height: 1.6;
 }
 
-h1, h2, h3, h4, h5, h6 {
+.traditional-border {
+  border: 4px double var(--color-primary);
+  padding: 10px;
+  position: relative;
+}
+
+.traditional-border::before {
+  content: "";
+  position: absolute;
+  top: 5px; left: 5px; right: 5px; bottom: 5px;
+  border: 1px solid var(--color-primary);
+}
+
+h1, h2 {
   font-family: var(--font-heading);
+  color: var(--color-secondary);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+h3, h4 {
+  font-family: var(--font-body);
   color: var(--color-secondary);
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -53,7 +75,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  background: linear-gradient(135deg, var(--color-primary), #E67E22);
   color: #fff;
   box-shadow: 0 4px 12px rgba(211, 84, 0, 0.2);
 }
