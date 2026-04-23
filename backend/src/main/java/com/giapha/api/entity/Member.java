@@ -32,6 +32,12 @@ public class Member {
     @Column(name = "ho_ten", nullable = false, length = 100)
     private String hoTen;
 
+    @Column(name = "ten_goi_khac", length = 100)
+    private String tenGoiKhac;
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "gioi_tinh", nullable = false)
     private Gender gioiTinh;
@@ -40,16 +46,34 @@ public class Member {
     @Column(name = "ngay_sinh")
     private LocalDate ngaySinh;
 
+    @Column(name = "ngay_sinh_am_lich", length = 50)
+    private String ngaySinhAmLich;
+
     @Column(name = "nam_sinh_du_doan")
     private Integer namSinhDuDoan;
 
     @Column(name = "is_alive", nullable = false)
     @Builder.Default
-    private boolean isAlive = true;
+    private Boolean isAlive = true;
+
+    // Đảm bảo Jackson không ghi đè null vào trường này
+    public void setIsAlive(Boolean isAlive) {
+        this.isAlive = isAlive != null ? isAlive : true;
+    }
+
+    public Boolean getIsAlive() {
+        return isAlive != null ? isAlive : true;
+    }
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "ngay_mat")
     private LocalDate ngayMat;
+
+    @Column(name = "ngay_mat_am_lich", length = 50)
+    private String ngayMatAmLich;
+
+    @Column(name = "ngay_gio", length = 50)
+    private String ngayGio;
 
     @Column(name = "so_doi", nullable = false)
     private Integer soDoi;
@@ -71,6 +95,9 @@ public class Member {
 
     @PrePersist
     protected void onCreate() {
+        if (isAlive == null) {
+            isAlive = true;
+        }
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
